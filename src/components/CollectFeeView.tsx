@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ClassSection, Collection, FeeDemand, PaymentMode, SchoolInfo, Student } from '../types';
 import { formatCurrency, formatDate, generateReceiptNo } from '../utils/formatters';
 import {
@@ -182,6 +183,19 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
     onViewReceipt(newCollection);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
     <div className="space-y-6 pb-12">
       
@@ -198,7 +212,9 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
         </div>
 
         {activeStudent && (
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               setSelectedStudentId('');
               setSearchQuery('');
@@ -206,7 +222,7 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
             className="text-xs text-slate-300 hover:text-white bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg font-medium cursor-pointer transition"
           >
             ← Select Different Student
-          </button>
+          </motion.button>
         )}
       </div>
 
@@ -257,14 +273,17 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
           <div className="md:col-span-2 glass-panel p-5 rounded-2xl">
             <h3 className="text-sm font-serif font-bold text-slate-200 mb-3">Select Student for Payment</h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-1">
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-1">
+              <AnimatePresence>
               {filteredStudents.map((st) => {
                 const cls = classes.find((c) => c.id === st.classId);
                 const stDemands = feeDemands.filter((d) => d.studentId === st.id && d.status !== 'PAID');
                 const pendingTotal = stDemands.reduce((sum, d) => sum + (d.netDue - d.paidAmount), 0);
 
                 return (
-                  <div
+                  <motion.div
+                    variants={itemVariants}
+                    layout
                     key={st.id}
                     onClick={() => setSelectedStudentId(st.id)}
                     className="p-4 rounded-xl border border-slate-800 bg-slate-900/40 hover:border-emerald-500/60 hover:bg-slate-800/80 cursor-pointer transition flex items-center justify-between group"
@@ -296,16 +315,17 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
                       )}
                       <ChevronRight className="w-4 h-4 text-slate-500 ml-auto mt-2 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition" />
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
+              </AnimatePresence>
 
               {filteredStudents.length === 0 && (
                 <div className="col-span-2 text-center py-12 text-slate-500 text-xs">
                   No matching students found.
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
 
         </div>
@@ -450,7 +470,9 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
               <label className="text-xs font-bold text-slate-300 block mb-2">Mode of Payment</label>
               <div className="grid grid-cols-2 gap-2">
                 {(['Cash', 'UPI/Online', 'Cheque', 'Bank Transfer', 'Card'] as PaymentMode[]).map((mode) => (
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     key={mode}
                     type="button"
                     onClick={() => setPaymentMode(mode)}
@@ -461,7 +483,7 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
                     }`}
                   >
                     {mode}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -517,14 +539,16 @@ export const CollectFeeView: React.FC<CollectFeeViewProps> = ({
             </div>
 
             {/* Submit Action Button */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={totalPayableAmount <= 0}
               className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-40 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-950/50 transition cursor-pointer flex items-center justify-center gap-2"
             >
               <Printer className="w-4 h-4" />
               <span>Record Fee & Print Receipt</span>
-            </button>
+            </motion.button>
 
           </div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { ClassSection, Collection, FeeDemand, FeeType, SchoolInfo, Student } from '../types';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import {
@@ -97,11 +98,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const overdueDemands = feeDemands.filter((d) => d.status === 'OVERDUE' || d.status === 'UNPAID');
   const overdueStudentIds = Array.from(new Set(overdueDemands.map((d) => d.studentId))).slice(0, 5);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
     <div className="space-y-6 pb-12">
       
       {/* Hero Welcome & Quick Action Bar */}
-      <div className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 text-white shadow-2xl relative overflow-hidden">
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 text-white shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
@@ -121,29 +135,38 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onOpenCollectFee()}
-              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all hover:scale-105 cursor-pointer glow-effect"
+              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all cursor-pointer glow-effect"
             >
               <Receipt className="w-4 h-4" />
               <span>Collect Fee Receipt</span>
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenAddStudent}
               className="flex items-center gap-2 px-4 py-2.5 glass-button text-slate-100 font-semibold text-xs rounded-xl cursor-pointer"
             >
               <Plus className="w-4 h-4 text-emerald-400" />
               <span>New Student</span>
-            </button>
+            </motion.button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* KPI Key Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
         
         {/* Card 1: Total Collections */}
-        <div className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
+        <motion.div variants={itemVariants} className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">Total Collections</span>
             <div className="w-9 h-9 bg-emerald-950/60 text-emerald-400 rounded-xl border border-emerald-800/50 flex items-center justify-center">
@@ -159,10 +182,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <span>{collections.length} Fee Receipts Issued</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Card 2: Total Outstanding */}
-        <div className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
+        <motion.div variants={itemVariants} className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">Outstanding Dues</span>
             <div className="w-9 h-9 bg-rose-950/60 text-rose-400 rounded-xl border border-rose-800/50 flex items-center justify-center">
@@ -178,10 +201,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <span>{feeDemands.filter((d) => d.status !== 'PAID').length} Pending Demands</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Card 3: Collection Efficiency */}
-        <div className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
+        <motion.div variants={itemVariants} className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">Collection Efficiency</span>
             <div className="w-9 h-9 bg-sky-950/60 text-sky-400 rounded-xl border border-sky-800/50 flex items-center justify-center">
@@ -193,16 +216,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
               {collectionEfficiency}%
             </div>
             <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
-              <div
-                className="bg-emerald-400 h-2 rounded-full transition-all duration-500"
-                style={{ width: `${Math.min(100, collectionEfficiency)}%` }}
-              ></div>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(100, collectionEfficiency)}%` }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
+                className="bg-emerald-400 h-2 rounded-full"
+              ></motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Card 4: Active Students */}
-        <div className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
+        <motion.div variants={itemVariants} className="glass-panel p-5 rounded-2xl hover:bg-slate-800/40 transition-colors">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">Active Students</span>
             <div className="w-9 h-9 bg-indigo-950/60 text-indigo-400 rounded-xl border border-indigo-800/50 flex items-center justify-center">
@@ -218,9 +243,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <span>Across {classes.length} Classes & Sections</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-      </div>
+      </motion.div>
 
       {/* Analytics Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -232,13 +257,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <h3 className="text-base font-serif font-bold text-slate-200">Monthly Demands vs Fee Collections</h3>
               <p className="text-xs text-slate-400">Comparing expected fee demand against actual collections</p>
             </div>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onSelectTab('reports')}
               className="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>Full Report</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
+            </motion.button>
           </div>
 
           <div className="h-64 w-full">
@@ -314,13 +341,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <h3 className="text-base font-serif font-bold text-slate-200">Recent Collections</h3>
               <p className="text-xs text-slate-400">Latest fee receipts generated</p>
             </div>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onSelectTab('collection-register')}
               className="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>View All</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
+            </motion.button>
           </div>
 
           <div className="overflow-x-auto">
@@ -342,12 +371,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <td className="py-2.5 px-3 text-slate-400">{col.className}-{col.section}</td>
                     <td className="py-2.5 px-3 font-bold text-emerald-400">{formatCurrency(col.totalAmountPaid, schoolInfo.currencySymbol)}</td>
                     <td className="py-2.5 px-3 text-right">
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => onViewReceipt(col)}
                         className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded text-[11px] transition cursor-pointer border border-slate-700/60"
                       >
                         Receipt
-                      </button>
+                      </motion.button>
                     </td>
                   </tr>
                 ))}
@@ -363,13 +394,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <h3 className="text-base font-serif font-bold text-slate-200">Pending Fee Follow-ups</h3>
               <p className="text-xs text-slate-400">Students with unpaid or overdue demands</p>
             </div>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onSelectTab('due-register')}
               className="text-xs text-rose-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>Due Register</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
+            </motion.button>
           </div>
 
           <div className="space-y-3">
@@ -405,12 +438,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         {formatCurrency(totalPending, schoolInfo.currencySymbol)}
                       </span>
                     </div>
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => onOpenCollectFee(student.id)}
                       className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg shadow-sm transition cursor-pointer"
                     >
                       Collect
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               );

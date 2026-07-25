@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ClassSection, Collection, FeeDemand, SchoolInfo, Student } from '../types';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import {
@@ -144,6 +145,19 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
     );
   });
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
     <div className="space-y-6 pb-12">
       
@@ -159,13 +173,15 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
           </p>
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleOpenAddModal}
           className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer"
         >
           <UserPlus className="w-4 h-4" />
           <span>Add New Student</span>
-        </button>
+        </motion.button>
       </div>
 
       {/* Filter Toolbar */}
@@ -188,7 +204,9 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
           {/* Active Status Tabs */}
           <div className="flex bg-slate-900 p-1 rounded-xl text-xs font-semibold border border-slate-800">
             {(['ACTIVE', 'ALL', 'INACTIVE'] as const).map((tab) => (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 key={tab}
                 onClick={() => setActiveTabFilter(tab)}
                 className={`px-3 py-1 rounded-lg transition cursor-pointer ${
@@ -196,7 +214,7 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
                 }`}
               >
                 {tab}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -229,14 +247,19 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
                 <th className="py-3 px-4 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+            <motion.tbody
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="divide-y divide-slate-800/60 text-slate-300"
+            >
               {filteredStudents.map((st) => {
                 const cls = classes.find((c) => c.id === st.classId);
                 const stDemands = feeDemands.filter((d) => d.studentId === st.id);
                 const pendingSum = stDemands.reduce((sum, d) => sum + (d.netDue - d.paidAmount), 0);
 
                 return (
-                  <tr key={st.id} className="hover:bg-slate-800/40 transition">
+                  <motion.tr variants={itemVariants} key={st.id} className="hover:bg-slate-800/40 transition">
                     <td className="py-3 px-4 font-mono">
                       <span className="font-bold text-slate-100 block">{st.admissionNo}</span>
                       <span className="text-[11px] text-slate-400">Roll: {st.rollNo}</span>
@@ -279,33 +302,39 @@ export const StudentsView: React.FC<StudentsViewProps> = ({
                     </td>
                     <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center gap-1.5">
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => setViewingStudent(st)}
                           title="View Student Ledger"
                           className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition cursor-pointer"
                         >
                           <Eye className="w-4 h-4" />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleOpenEditModal(st)}
                           title="Edit Student"
                           className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition cursor-pointer"
                         >
                           <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => onOpenCollectFee(st.id)}
                           title="Collect Fee"
                           className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-[11px] transition cursor-pointer shadow-xs"
                         >
                           Collect
-                        </button>
+                        </motion.button>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 );
               })}
-            </tbody>
+            </motion.tbody>
           </table>
         </div>
       </div>

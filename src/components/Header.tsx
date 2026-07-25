@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { ClassSection, Collection, FeeDemand, SchoolInfo, Student } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { resetToDemoData } from '../utils/storage';
@@ -67,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex flex-col md:flex-row items-center justify-between py-3 gap-4">
           
           {/* School Brand */}
-          <div className="flex items-center gap-3">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3">
             <div className="w-11 h-11 bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-2xl flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20 shrink-0">
               <Building2 className="w-6 h-6 text-slate-950" />
             </div>
@@ -82,7 +83,7 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
               <p className="text-xs text-slate-400 mt-1">{schoolInfo.tagline}</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Search Student */}
           <div className="relative w-full md:w-80">
@@ -103,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Quick Search Dropdown */}
             {showSearchResults && filteredStudents.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 max-h-64 overflow-y-auto divide-y divide-white/5">
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="absolute top-full left-0 right-0 mt-2 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 max-h-64 overflow-y-auto divide-y divide-white/5">
                 {filteredStudents.map((student) => (
                   <div
                     key={student.id}
@@ -133,34 +134,40 @@ export const Header: React.FC<HeaderProps> = ({
                     </button>
                   </div>
                 ))}
-              </div>
+              </motion.div>
             )}
             {showSearchResults && searchQuery.trim() && filteredStudents.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-3 text-xs text-slate-400 text-center z-50">
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="absolute top-full left-0 right-0 mt-1 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-3 text-xs text-slate-400 text-center z-50">
                 No matching student found.
-              </div>
+              </motion.div>
             )}
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="flex items-center gap-2.5 w-full md:w-auto justify-end">
-            <button
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-2.5 w-full md:w-auto justify-end">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenAddStudent}
               className="flex items-center gap-1.5 px-3.5 py-2 glass-button text-slate-200 text-xs font-semibold rounded-xl cursor-pointer"
             >
               <Plus className="w-4 h-4 text-emerald-400" />
               <span>Add Student</span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onOpenCollectFee()}
-              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all hover:scale-105 cursor-pointer glow-effect"
+              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all cursor-pointer glow-effect"
             >
               <Receipt className="w-4 h-4" />
               <span>Collect Fee</span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 if (confirm('Reset system data to default sample demo state? All local edits will be replaced with fresh demo records.')) {
                   resetToDemoData();
@@ -170,8 +177,8 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-2 text-slate-400 glass-button rounded-xl transition cursor-pointer flex items-center justify-center h-[32px] w-[32px]"
             >
               <RotateCcw className="w-4 h-4" />
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
         </div>
 

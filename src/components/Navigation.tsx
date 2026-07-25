@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   BarChart3,
   BookOpen,
@@ -39,8 +40,10 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, onSelectTab, 
             const isActive = activeTab === item.id;
 
             return (
-              <button
+              <motion.button
                 key={item.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => onSelectTab(item.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer relative whitespace-nowrap ${
                   isActive
@@ -60,7 +63,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, onSelectTab, 
                     {item.badge}
                   </span>
                 )}
-              </button>
+              </motion.button>
             );
           })}
         </div>
