@@ -56,12 +56,15 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ collection, schoolIn
             </div>
 
             {/* School Header */}
-            <div className="text-center border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
-              <h1 className="text-2xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h1>
-              <p className="text-xs text-slate-400 print:text-slate-600 mt-0.5">{schoolInfo.tagline}</p>
-              <p className="text-xs text-slate-400 print:text-slate-500 mt-0.5">{schoolInfo.address} | Ph: {schoolInfo.phone}</p>
-              <div className="inline-block mt-2 bg-slate-800 print:bg-slate-100 text-slate-200 print:text-slate-800 font-semibold text-xs px-3 py-1 rounded-full border border-slate-700 print:border-slate-200 uppercase tracking-wider">
-                FEE PAYMENT RECEIPT ({schoolInfo.academicYear})
+            <div className="flex items-center justify-center gap-4 border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
+              <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain" />
+              <div className="text-center">
+                <h1 className="text-2xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h1>
+                <p className="text-xs text-slate-400 print:text-slate-600 mt-0.5">{schoolInfo.tagline}</p>
+                <p className="text-xs text-slate-400 print:text-slate-500 mt-0.5">{schoolInfo.address} | Ph: {schoolInfo.phone}</p>
+                <div className="inline-block mt-2 bg-slate-800 print:bg-slate-100 text-slate-200 print:text-slate-800 font-semibold text-xs px-3 py-1 rounded-full border border-slate-700 print:border-slate-200 uppercase tracking-wider">
+                  FEE PAYMENT RECEIPT ({schoolInfo.academicYear})
+                </div>
               </div>
             </div>
 
@@ -165,11 +168,14 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ collection, schoolIn
             </div>
 
             {/* School Header */}
-            <div className="text-center border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
-              <h2 className="text-xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h2>
-              <p className="text-xs text-slate-400 print:text-slate-500">{schoolInfo.address}</p>
-              <div className="inline-block mt-1.5 bg-slate-800 print:bg-slate-100 text-slate-200 print:text-slate-800 font-semibold text-[11px] px-2.5 py-0.5 rounded-full border border-slate-700 print:border-slate-200 uppercase tracking-wider">
-                FEE PAYMENT RECEIPT ({schoolInfo.academicYear})
+            <div className="flex items-center justify-center gap-3 border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
+              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <div className="text-center">
+                <h2 className="text-xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h2>
+                <p className="text-xs text-slate-400 print:text-slate-500">{schoolInfo.address}</p>
+                <div className="inline-block mt-1.5 bg-slate-800 print:bg-slate-100 text-slate-200 print:text-slate-800 font-semibold text-[11px] px-2.5 py-0.5 rounded-full border border-slate-700 print:border-slate-200 uppercase tracking-wider">
+                  FEE PAYMENT RECEIPT ({schoolInfo.academicYear})
+                </div>
               </div>
             </div>
 

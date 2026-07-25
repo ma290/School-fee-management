@@ -69,8 +69,8 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* School Brand */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-2xl flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20 shrink-0">
-              <Building2 className="w-6 h-6 text-slate-950" />
+            <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 border-2 border-emerald-500/30 shadow-lg shadow-emerald-500/20 bg-white">
+              <img src="/logo.png" alt="School Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-2">
