@@ -57,7 +57,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ collection, schoolIn
 
             {/* School Header */}
             <div className="flex items-center justify-center gap-4 border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
-              <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain" />
+              <img src="/logo.jpg" alt="Logo" className="w-16 h-16 object-contain" />
               <div className="text-center">
                 <h1 className="text-2xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h1>
                 <p className="text-xs text-slate-400 print:text-slate-600 mt-0.5">{schoolInfo.tagline}</p>
@@ -169,7 +169,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ collection, schoolIn
 
             {/* School Header */}
             <div className="flex items-center justify-center gap-3 border-b border-slate-800 print:border-slate-200 pb-4 mb-4">
-              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <img src="/logo.jpg" alt="Logo" className="w-12 h-12 object-contain" />
               <div className="text-center">
                 <h2 className="text-xl font-serif font-bold text-white print:text-slate-900 tracking-tight">{schoolInfo.name}</h2>
                 <p className="text-xs text-slate-400 print:text-slate-500">{schoolInfo.address}</p>
