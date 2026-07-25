@@ -1,0 +1,6 @@
+{
+  "name": "School Fee & Collection Management System",
+  "description": "Comprehensive school fee management system featuring student profiles, custom classes/sections, fee structures, payment collections with printable receipts, due registers, collection registers, monthly reconciliation, and analytical reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
