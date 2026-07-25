@@ -1,5 +1,22 @@
 # ==========================================
-# Stage 2: Serve with Nginx (Alpine)
+# Stage 1: Build the React Application
+# ==========================================
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy the rest of the application
+COPY . .
+
+# Build the app (respecting the max memory size we set in package.json)
+RUN npm run build
+
+# ==========================================
+# Stage 2: Serve with Nginx (Alpine) on Port 8000
 # ==========================================
 FROM nginx:alpine
 
@@ -16,7 +33,7 @@ RUN echo -e "server {\n\
     }\n\
 }" > /etc/nginx/conf.d/default.conf
 
-# Expose port 8000
+# Expose port 8000 for the hosting provider's health check
 EXPOSE 8000
 
 # Start Nginx
