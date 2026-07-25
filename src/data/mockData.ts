@@ -1,11 +1,11 @@
 import { ClassSection, Collection, FeeDemand, FeeType, SchoolInfo, Student } from '../types';
 
 export const initialSchoolInfo: SchoolInfo = {
-  name: "St. Xavier's Academy",
-  tagline: "Excellence in Education & Character Building",
-  address: "124 Knowledge Campus, Civil Lines, Academic City - 110001",
-  phone: "+91 98765 43210 / 011-23456789",
-  email: "accounts@stxaviersacademy.edu.in",
+  name: "Menal Public Sr. Sec. School",
+  tagline: "Excellence in Education! | 100% Results | Sports | Smart Learning",
+  address: "Kota",
+  phone: "94141-80666 / 99291-40741",
+  email: "info@menalpublicschool.com",
   academicYear: "2026-2027",
   receiptPrefix: "REC-2026-",
   currencySymbol: "₹",
